@@ -112,10 +112,8 @@ The current implementation prioritizes functionality and project structure over 
 - Should event details be available through a dedicated endpoint?
 - What loading, empty, and error-state designs are expected?
 - Are there specific accessibility, localization, timezone, or date-formatting requirements?
+- Should add date range filtering section?
 
 ## Additional notes
 
-- Pull-to-refresh forces the events query to refetch.
-- Expo Router presents event details as a modal and passes the event ID as a route parameter.
-- Tests focus on valuable user-facing behavior: rendering event items and interacting with filter controls.
-- Dates currently use the device locale. Product requirements should clarify whether event dates should use the device timezone, the event's local timezone, or a fixed timezone supplied by the API.
+- I organize new functionalities using a feature-folder approach. Each feature folder contains all logic and UI components for a specific section, making it straightforward to remove features from the project without affecting other parts of the application.
