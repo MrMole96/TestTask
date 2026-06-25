@@ -1,0 +1,121 @@
+# Event Discovery
+
+An Expo and React Native application for browsing, filtering, and viewing event details. The project uses Expo Router for navigation, TanStack Query for server-state management, and Expo UI for native filter controls.
+
+## How to run the project
+
+### Requirements
+
+- Node.js and npm
+- Expo Go, an iOS simulator, or an Android emulator
+
+### Installation
+
+```bash
+npm install
+```
+
+### Start the development server
+
+```bash
+npm start
+```
+
+After the server starts, follow the terminal instructions to open the application. You can also start a specific platform directly:
+
+```bash
+npm run ios
+npm run android
+npm run web
+```
+
+### Run tests
+
+```bash
+npm test
+```
+
+For watch mode:
+
+```bash
+npm run test:watch
+```
+
+## Main implementation decisions and trade-offs
+
+### Virtualized event list
+
+Events are rendered with React Native's `FlatList`. The number of events may grow significantly, so list virtualization is preferable to rendering all items inside a regular `ScrollView`.
+
+This choice also provides a straightforward path toward API pagination or infinite scrolling using `onEndReached`. Pagination was not implemented for the current scope.
+
+### Filtering
+
+The discovery screen supports:
+
+- City filtering
+- Country filtering
+- Text search
+
+Filtering is currently performed on the client because the available dataset is fetched in one request. The filter logic is kept in the `useEvents` hook so the screen remains focused on presentation and user interaction.
+
+This approach is simple and responsive for a small dataset. For a large or paginated dataset, however, filtering should move to the API. Client-side filtering can only operate on records that have already been downloaded and therefore cannot provide complete results across all pages.
+
+### Server-state management
+
+TanStack Query handles event fetching, caching, loading state, refresh state, and manual refetching. Event details are opened by passing only the event ID through Expo Router and reading the corresponding event from the query cache.
+
+Passing an ID rather than serializing the entire event keeps navigation parameters small and avoids duplicating potentially stale event data.
+
+The current cache-based detail screen assumes the event list has already been loaded. In a production application, the detail screen should have its own query and be able to fetch an event directly by ID.
+
+### Event status statistics
+
+The live, upcoming, and past totals are currently calculated from the events available on the client. This is sufficient for the provided dataset, but it will become inaccurate after introducing pagination because the client may only hold the first page, for example 50 events.
+
+The API should return either:
+
+- Status totals alongside the paginated event response, or
+- A separate summary endpoint containing the complete totals.
+
+### Past events
+
+A dedicated option for hiding or showing past events was considered but not implemented due to time constraints. Past events would likely be less important during the primary discovery flow than live and upcoming events, so they could be hidden by default and enabled through an optional filter.
+
+### UI scope
+
+The current implementation prioritizes functionality and project structure over visual polish. Styling is intentionally minimal.
+
+## What I would improve with more time
+
+- Add server-side pagination or infinite scrolling.
+- Move filtering and sorting to API query parameters for large datasets.
+- Add a toggle for including past events, with live and upcoming events prioritized by default.
+- Add an event-details endpoint so modal routes work after a cold start or direct navigation.
+- Return authoritative event-status totals from the backend.
+- Add clear empty, error, and retry states.
+- Add skeleton loading placeholders instead of plain loading text.
+- Debounce text search to avoid unnecessary filtering or network requests.
+- Improve accessibility labels, touch targets, and screen-reader behavior.
+- Add more tests for filtering combinations, refresh behavior, navigation, empty results, and API failures.
+- Introduce reusable design tokens for colors, spacing, typography, borders, and component states. A token-based theme would make visual changes safer and more consistent as the project grows, while also making dark mode and future branding easier to support.
+- Refine responsive layouts and provide more polished native presentation on iOS and Android.
+
+## Questions and ambiguities identified
+
+- Is the events endpoint expected to return the complete dataset or a paginated subset?
+- Should filtering and sorting happen locally or be supported by the API?
+- Should status totals represent all events or only the currently filtered results?
+- Should past events be displayed by default?
+- What is the expected default sort order for live, upcoming, and past events?
+- Should selecting a country limit the available city options to that country?
+- Should event details be available through a dedicated endpoint?
+- What loading, empty, and error-state designs are expected?
+- Are there specific accessibility, localization, timezone, or date-formatting requirements?
+
+## Additional notes
+
+- Pull-to-refresh forces the events query to refetch.
+- Expo Router presents event details as a modal and passes the event ID as a route parameter.
+- Tests focus on valuable user-facing behavior: rendering event items and interacting with filter controls.
+- Dates currently use the device locale. Product requirements should clarify whether event dates should use the device timezone, the event's local timezone, or a fixed timezone supplied by the API.
