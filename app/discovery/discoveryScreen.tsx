@@ -1,7 +1,8 @@
 import { router } from "expo-router";
-import { FlatList, StyleSheet, Text, TextInput, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { EventItem } from "./components/eventItem";
 import { FilterPicker } from "./components/filterPicker";
+import { SearchInput } from "./components/searchBar";
 import { Stats } from "./components/stats";
 import { useEvents } from "./hooks/useEvents";
 import {
@@ -51,11 +52,10 @@ export const DiscoveryScreen = () => {
         list={Array.from(countries)}
       />
 
-      <TextInput
-        style={{ width: 200, height: 40, borderWidth: 1 }}
-        value={search}
-        onChangeText={setSearch}
+      <SearchInput
+        search={search}
         placeholder="Search..."
+        setSearch={setSearch}
       />
       <Stats
         upcoming={getUpcomingNumberOfEvents(filteredData)}
@@ -79,6 +79,7 @@ export const DiscoveryScreen = () => {
           />
         )}
         ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
+        //Add pagination for large data sets, but for the sake of this task, I will skip it
       />
     </View>
   );

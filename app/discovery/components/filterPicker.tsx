@@ -1,4 +1,5 @@
 import { Host, Picker, Row, Spacer, Text } from "@expo/ui";
+import { StyleSheet } from "react-native";
 
 interface FilterPickerProps {
   label: string;
@@ -17,11 +18,7 @@ export const FilterPicker = ({
 
   return (
     <Host matchContents style={{ width: "100%" }}>
-      <Row
-        alignment="center"
-        spacing={12}
-        style={{ padding: 16, width: "100%" }}
-      >
+      <Row alignment="center" spacing={12} style={styles.row}>
         <Text>{`${label}:`}</Text>
         <Spacer flexible />
 
@@ -34,3 +31,13 @@ export const FilterPicker = ({
     </Host>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  row: {
+    padding: 16,
+    width: "100%",
+  },
+});

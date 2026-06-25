@@ -1,5 +1,11 @@
 export type EventStatus = "upcoming" | "live" | "past";
 
+export enum EventStatusEnum {
+  UPCOMING = "upcoming",
+  LIVE = "live",
+  PAST = "past",
+}
+
 export type Event = {
   id: string;
   type: string;

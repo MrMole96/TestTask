@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 
-// Currently, endpoint returns only array of events, so i would expect to get these props in separate query, but for the sake of this task, i will calculate them here
+// Currently, endpoint returns only array of events, so i would expect to get these props in separate query
 export const Stats = ({
   upcoming,
   live,

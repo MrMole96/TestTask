@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Event } from "../api/types";
+import { Event, EventStatusEnum } from "../api/types";
 
 interface EventItemProps {
   event: Event;
@@ -8,11 +8,18 @@ interface EventItemProps {
 
 export const EventItem = ({ event, onPress }: EventItemProps) => {
   const borderColor =
-    event.status === "live"
+    event.status === EventStatusEnum.LIVE
       ? "green"
-      : event.status === "upcoming"
+      : event.status === EventStatusEnum.UPCOMING
         ? "red"
         : "gray";
+
+  const availabilityColor =
+    event.booked < event.capacity - 5
+      ? "green"
+      : event.booked < event.capacity
+        ? "orange"
+        : "red";
 
   return (
     <TouchableOpacity
@@ -21,9 +28,17 @@ export const EventItem = ({ event, onPress }: EventItemProps) => {
     >
       <View>
         <Text>{new Date(event.date).toLocaleString()}</Text>
-        <Text>
-          Booked {event.booked} of {event.capacity}
-        </Text>
+        <View style={styles.textContainer}>
+          <Text>
+            Booked {event.booked} of {event.capacity}
+          </Text>
+          <View
+            style={[
+              styles.availibilityDot,
+              { backgroundColor: availabilityColor },
+            ]}
+          />
+        </View>
       </View>
       <View>
         <Text>{event.type}</Text>
@@ -42,5 +57,16 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderRadius: 5,
+  },
+  textContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  availibilityDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginLeft: 10,
   },
 });

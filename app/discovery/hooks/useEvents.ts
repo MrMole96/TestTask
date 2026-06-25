@@ -30,10 +30,6 @@ export const useEvents = () => {
     })
     .sort(sortEventsByDate);
 
-  console.log("filteredData", filteredData);
-  console.log("isFetching", isFetching);
-  console.log("isLoading", isLoading);
-
   return {
     filteredData,
     isLoading,
