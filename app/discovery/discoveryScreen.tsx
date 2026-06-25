@@ -1,8 +1,8 @@
 import { router } from "expo-router";
 import { FlatList, StyleSheet, Text, TextInput, View } from "react-native";
-import { EventItem } from "./components/EventItem";
-import { FilterPicker } from "./components/FilterPicker";
-import { Stats } from "./components/Stats";
+import { EventItem } from "./components/eventItem";
+import { FilterPicker } from "./components/filterPicker";
+import { Stats } from "./components/stats";
 import { useEvents } from "./hooks/useEvents";
 import {
   getLiveNumberOfEvents,
@@ -79,7 +79,6 @@ export const DiscoveryScreen = () => {
           />
         )}
         ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
-        //Add
       />
     </View>
   );

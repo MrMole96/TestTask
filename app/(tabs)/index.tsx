@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 
 import { View } from "@/components/Themed";
-import { DiscoveryScreen } from "../discovery/discovery-screen";
+import { DiscoveryScreen } from "../discovery/discoveryScreen";
 
 export default function TabOneScreen() {
   return (
